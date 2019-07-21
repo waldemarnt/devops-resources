@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: node-app-deployment
+  labels:
+    app: node-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: node-app
+  template:
+    metadata:
+      labels:
+        app: node-app
+    spec:
+      containers:
+      - name: node-app
+        image: node-app:latest
+        ports:
+        - containerPort: 3000
+          name: webinterface
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: node-app
+  labels:
+    service: node-app
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    name: webinterface
+  selector:
+    app: node-app
